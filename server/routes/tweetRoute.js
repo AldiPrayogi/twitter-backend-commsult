@@ -2,9 +2,8 @@ const express = require('express');
 const {
   checkIfTokenIsProvided,
   verifyToken,
-  verifyIfUserIsValid,
 } = require('../middleware/authJwt');
-const UserController = require('../controllers/userController');
+const tweetController = require('../controllers/tweetController');
 
 const router = express.Router();
 
@@ -16,12 +15,13 @@ router.use((req, res, next) => {
   next();
 });
 
-router.get('/:userID', UserController.find);
-router.put('/:userID', [
-  checkIfTokenIsProvided,
+router.post('/', [
   verifyToken,
-  verifyIfUserIsValid,
-], UserController.update);
-router.get('/', UserController.findAll);
+  checkIfTokenIsProvided,
+], tweetController.createTweet);
+router.post('/:tweetID/reply', [
+  verifyToken,
+  checkIfTokenIsProvided,
+], tweetController.createTweet);
 
 module.exports = router;

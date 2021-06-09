@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 
 module.exports = (sequelize, Sequelize) => {
   return sequelize.define('User', {
-    userID: {
+    ID: {
       type: DataTypes.UUID,
       defaultValue: Sequelize.UUIDV4,
       primaryKey: true,
@@ -28,7 +28,7 @@ module.exports = (sequelize, Sequelize) => {
     hooks: {
       beforeCreate: (user) => {
         user.password = bcrypt.hashSync(user.password, 10);
-        user.userID = v4();
+        user.ID = v4();
       },
     },
   });

@@ -19,13 +19,13 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.users = require('./User.js')(sequelize, Sequelize);
+db.users = require('./User')(sequelize, Sequelize);
 db.tweets = require('./Tweet')(sequelize, Sequelize);
 
-db.users.hasMany(db.tweets, {as: 'tweets'});
+// db.users.hasMany(db.tweets, {as: 'tweets'});
 db.tweets.belongsTo(db.users, {
-  foreignKey: 'tweetID',
-  as: 'tweet',
+  foreignKey: 'userID',
+  as: 'user',
 });
 
 module.exports = db;

@@ -16,7 +16,7 @@ const healthRoutes = require('./server/routes/healthRoute');
 const swaggerRoutes = require('./server/routes/swaggerRoute');
 const userRoutes = require('./server/routes/userRoute');
 const authRoutes = require('./server/routes/authRoute');
-// const errorHandler = require('./server/utils/errorHandler');
+const tweetRoutes = require('./server/routes/tweetRoute');
 
 const app = express();
 
@@ -30,6 +30,7 @@ app.use('/health', healthRoutes);
 app.use('/swagger', swaggerRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/tweets', tweetRoutes);
 
 // default path to serve up index.html (single page application)
 app.all('', (req, res) => {

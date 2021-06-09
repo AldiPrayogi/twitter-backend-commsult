@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 
-module.exports = (sequelize, Sequelize) => {
-  const Tweet = sequelize.define('Tweet', {
+module.exports = (sequelize) => {
+  return sequelize.define('Tweet', {
     ID: {
       type: DataTypes.STRING,
       primaryKey: true,
@@ -9,7 +9,11 @@ module.exports = (sequelize, Sequelize) => {
     message: {
       type: DataTypes.STRING(240),
     },
+    previousTweet: {
+      type: DataTypes.STRING,
+    },
+    nextTweet: {
+      type: DataTypes.STRING,
+    },
   });
-
-  return Tweet;
 };

@@ -55,7 +55,7 @@ exports.signInService = async(payload) => {
     }
 
     const token = jwt.sign({
-      id: fetchedUser.userID,
+      id: fetchedUser.ID,
       username: fetchedUser.username,
     }, config.secret, {
       expiresIn: 86400,

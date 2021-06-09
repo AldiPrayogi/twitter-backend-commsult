@@ -29,6 +29,6 @@ exports.findAllUsers = async() => {
 
 exports.updateOne = async(userID, payload) => {
   return User.update(payload, {
-    where: {userID: userID},
+    where: {ID: userID},
   });
 };
