@@ -3,7 +3,7 @@ const { v4 } = require('uuid');
 const bcrypt = require('bcrypt');
 
 module.exports = (sequelize, Sequelize) => {
-  const User = sequelize.define('User', {
+  return sequelize.define('User', {
     userID: {
       type: DataTypes.UUID,
       defaultValue: Sequelize.UUIDV4,
@@ -13,6 +13,9 @@ module.exports = (sequelize, Sequelize) => {
       type: DataTypes.STRING,
     },
     lastName: {
+      type: DataTypes.STRING,
+    },
+    username: {
       type: DataTypes.STRING,
     },
     email: {
@@ -29,6 +32,4 @@ module.exports = (sequelize, Sequelize) => {
       },
     },
   });
-
-  return User;
 };

@@ -27,4 +27,5 @@ db.tweets.belongsTo(db.users, {
   foreignKey: 'tweetID',
   as: 'tweet',
 });
+
 module.exports = db;

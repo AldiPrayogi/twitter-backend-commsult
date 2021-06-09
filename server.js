@@ -15,16 +15,20 @@ db.sequelize.sync({ force: false }).then(() => {
 const healthRoutes = require('./server/routes/healthRoute');
 const swaggerRoutes = require('./server/routes/swaggerRoute');
 const userRoutes = require('./server/routes/userRoute');
+const authRoutes = require('./server/routes/authRoute');
+// const errorHandler = require('./server/utils/errorHandler');
 
 const app = express();
 
 // enable parsing of http request body
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // routes and api calls
 app.use('/health', healthRoutes);
 app.use('/swagger', swaggerRoutes);
+app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
 
 // default path to serve up index.html (single page application)
@@ -40,7 +44,7 @@ app.listen(port, () => {
 });
 
 // error handler for unmatched routes or api calls
-app.use((req, res, next) => {
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, './public', '404.html'));
 });
 

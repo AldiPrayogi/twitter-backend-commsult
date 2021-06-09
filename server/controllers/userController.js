@@ -1,28 +1,8 @@
 const {
-  createUser,
   updateOne,
   fetchOne,
   fetchAll,
 } = require('../services/userService');
-
-exports.create = async(req, res) => {
-  if (!req.body){
-    res.status(400).send({
-      message: 'Content cannot be empty!',
-    });
-  }
-  try {
-    const createdUser = await createUser(req.body);
-    res.send({
-      status: 200,
-      createdUser: createdUser,
-    });
-  } catch (error) {
-    res.status(500).send({
-      message: error.message,
-    });
-  }
-};
 
 exports.find = async(req, res) => {
   try {
@@ -41,7 +21,6 @@ exports.find = async(req, res) => {
 exports.findAll = async(req, res) => {
   try {
     const fetchedUsers = await fetchAll();
-    console.log(fetchedUsers);
     res.send({
       status: 200,
       fetchedUsers: fetchedUsers,
