@@ -38,35 +38,34 @@ exports.signInService = async(payload) => {
     username,
   } = payload;
 
-  try {
-    const fetchedRawData = await findOneByUsername(username);
+  const fetchedRawData = await findOneByUsername(username);
 
-    const {
-      dataValues: fetchedUser,
-    } = fetchedRawData;
-
-    const isPasswordValid = bcrypt.compareSync(
-      payload.password,
-      fetchedUser.password,
-    );
-
-    if (!isPasswordValid) {
-      throw new Error();
-    }
-
-    const token = jwt.sign({
-      id: fetchedUser.ID,
-      username: fetchedUser.username,
-    }, config.secret, {
-      expiresIn: 86400,
-    });
-
-    return {
-      username: fetchedUser.username,
-      token: token,
-    };
-
-  } catch (error){
+  if (!fetchedRawData){
     throw new Error('Username or Password Does Not Match');
   }
+
+  const {
+    dataValues: fetchedUser,
+  } = fetchedRawData;
+
+  const isPasswordValid = bcrypt.compareSync(
+    payload.password,
+    fetchedUser.password,
+  );
+
+  if (!isPasswordValid) {
+    throw new Error('Username or Password Does Not Match');
+  }
+
+  const token = jwt.sign({
+    id: fetchedUser.ID,
+    username: fetchedUser.username,
+  }, config.secret, {
+    expiresIn: 7200,
+  });
+
+  return {
+    username: fetchedUser.username,
+    token: token,
+  };
 };

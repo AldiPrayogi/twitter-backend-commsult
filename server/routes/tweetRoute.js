@@ -15,13 +15,17 @@ router.use((req, res, next) => {
   next();
 });
 
-router.post('/', [
+router.post('/',
   verifyToken,
   checkIfTokenIsProvided,
-], tweetController.createTweet);
-router.post('/:tweetID/reply', [
+  tweetController.createTweet);
+router.put('/:tweetID',
   verifyToken,
   checkIfTokenIsProvided,
-], tweetController.createTweet);
+  tweetController.update);
+router.delete('/:tweetID',
+  verifyToken,
+  checkIfTokenIsProvided,
+  tweetController.delete);
 
 module.exports = router;

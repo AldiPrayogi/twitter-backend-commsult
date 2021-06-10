@@ -9,11 +9,5 @@ module.exports = (sequelize) => {
     message: {
       type: DataTypes.STRING(240),
     },
-    previousTweet: {
-      type: DataTypes.STRING,
-    },
-    nextTweet: {
-      type: DataTypes.STRING,
-    },
   });
 };
