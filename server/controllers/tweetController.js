@@ -2,10 +2,22 @@ const {
   createTweet,
   updateTweet,
   deleteTweet,
+  fetchAllTweets,
 } = require('../services/tweetService');
 
+exports.findAllTweets = async(req, res) => {
+  try {
+    const allTweets = await fetchAllTweets();
+    res.status(200).send(allTweets);
+  } catch (error){
+    res.status(204).send({
+      message: error.message,
+    });
+  }
+};
+
 exports.createTweet = async(req, res) => {
-  const token = req.get('x-access-token');
+  const token = req.cookies.token;
   const payload = {
     token,
     ...req.body,
@@ -14,7 +26,7 @@ exports.createTweet = async(req, res) => {
   try {
     const createdTweet = await createTweet(payload);
     res.send({
-      status: 200,
+      status: 201,
       createdTweet: createdTweet,
     });
   } catch (error){
@@ -25,7 +37,7 @@ exports.createTweet = async(req, res) => {
 };
 
 exports.update = async(req, res) => {
-  const token = req.get('x-access-token');
+  const token = req.cookies.token;
 
   const payload = {
     token,
@@ -36,7 +48,7 @@ exports.update = async(req, res) => {
     await updateTweet(req.params.tweetID, payload);
 
     res.send({
-      status: 200,
+      status: 201,
       message: 'Tweet Updated',
     });
 
@@ -48,7 +60,7 @@ exports.update = async(req, res) => {
 };
 
 exports.delete = async(req, res) => {
-  const token = req.get('x-access-token');
+  const token = req.cookies.token;
   const tweetID = req.params.tweetID;
   const payload = {
     token,

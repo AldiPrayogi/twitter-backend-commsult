@@ -3,9 +3,20 @@ const {
   findOneByID,
   updateMessage,
   deleteTweet,
+  findAll,
 } = require('../repositories/tweetRepository');
 const {v4} = require('uuid');
 const jwt = require('jsonwebtoken');
+
+exports.fetchAllTweets = async() => {
+  const fetchedTweets = await findAll();
+  if (!fetchedTweets){
+    throw new Error('No Tweet Found!');
+  }
+  return fetchedTweets.map((tweet) => {
+    return tweet.dataValues;
+  });
+};
 
 exports.createTweet = async(payload) => {
   const uuid = v4();

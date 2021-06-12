@@ -4,7 +4,7 @@ const path = require('path');
 const cors = require('cors');
 
 let corsOptions = {
-  origin: 'http://localhost:8081',
+  origin: 'http://localhost:3000',
 };
 
 const db = require('./server/models');
@@ -46,7 +46,9 @@ app.listen(port, () => {
 
 // error handler for unmatched routes or api calls
 app.use((req, res) => {
-  res.sendFile(path.join(__dirname, './public', '404.html'));
+  res.status(500).send({
+    message: 'Internal Server Error',
+  });
 });
 
 module.exports = app;

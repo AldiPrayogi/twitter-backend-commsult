@@ -15,6 +15,14 @@ exports.updateMessage = async(tweetID, payload) => {
   });
 };
 
+exports.findAll = async() => {
+  return Tweet.findAll({
+    order: [
+      ['createdAt', 'ASC'],
+    ],
+  });
+};
+
 exports.deleteTweet = async(tweetID) => {
   return Tweet.destroy({where: {ID: tweetID}});
 };

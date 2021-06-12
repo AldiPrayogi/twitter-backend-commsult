@@ -2,7 +2,7 @@ const {
   updateOne,
   findOne,
   findAllUsers,
-  findOneByEmailOrUsername,
+  findOneByUsername,
 } = require('../repositories/userRepository');
 const bcrypt = require('bcrypt');
 
@@ -35,10 +35,8 @@ exports.fetchAll = async() => {
 
 exports.updateOne = async(userID, payload) => {
 
-  if (payload.email || payload.username){
-    const checkUser = await findOneByEmailOrUsername(
-      payload.email, payload.username,
-    );
+  if (payload.username){
+    const checkUser = await findOneByUsername(payload.username);
     if (checkUser){
       throw new Error('Username or Email already taken');
     }

@@ -19,6 +19,10 @@ exports.findOneByEmailOrUsername = async(userEmail, username) => {
   }});
 };
 
+exports.findOneByEmail = async(email) => {
+  return User.findOne({where: {email: email}});
+};
+
 exports.findOneByUsername = async(username) => {
   return User.findOne({where: {username: username}});
 };

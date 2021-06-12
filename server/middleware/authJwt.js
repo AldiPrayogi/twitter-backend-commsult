@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/auth.config');
 
 const checkIfTokenIsProvided = (req, res, next) => {
-  const token = req.headers['x-access-token'];
+  const token = req.cookies.token;
 
   if (!token){
     return res.status(403).send({
@@ -13,7 +13,7 @@ const checkIfTokenIsProvided = (req, res, next) => {
 };
 
 const verifyToken = (req, res, next) => {
-  const token = req.headers['x-access-token'];
+  const token = req.cookies.token;
 
   jwt.verify(token, config.secret, (error, decoded) => {
     if (error){
@@ -28,9 +28,8 @@ const verifyToken = (req, res, next) => {
 };
 
 const verifyIfUserIsValid = (req, res, next) => {
-  const token = req.headers['x-access-token'];
+  const token = req.cookies.token;
 
-  console.log(req.params.userID);
   jwt.verify(token, config.secret, (error, decoded) => {
     if (req.params.userID !== decoded.id || error){
       return res.status(401).send({

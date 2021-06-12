@@ -1,7 +1,7 @@
 const {
   createUser,
   findOneByEmailOrUsername,
-  findOneByUsername,
+  findOneByEmail,
 } = require('../repositories/userRepository');
 const jwt = require('jsonwebtoken');
 const config = require('../config/auth.config');
@@ -35,10 +35,9 @@ exports.registerService = async(payload) => {
 
 exports.signInService = async(payload) => {
   const {
-    username,
+    email,
   } = payload;
-
-  const fetchedRawData = await findOneByUsername(username);
+  const fetchedRawData = await findOneByEmail(email);
 
   if (!fetchedRawData){
     throw new Error('Username or Password Does Not Match');
@@ -61,11 +60,22 @@ exports.signInService = async(payload) => {
     id: fetchedUser.ID,
     username: fetchedUser.username,
   }, config.secret, {
-    expiresIn: 7200,
+    expiresIn: '1d',
   });
 
   return {
+    id: fetchedUser.ID,
     username: fetchedUser.username,
     token: token,
   };
 };
+
+exports.verifyToken = (token) => {
+  return jwt.verify(token, config.secret, (error, decoded) => {
+    if (error) {
+      throw new Error(error);
+    }
+    return decoded;
+  });
+};
+
