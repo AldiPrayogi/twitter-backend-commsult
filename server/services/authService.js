@@ -3,6 +3,9 @@ const {
   findOneByEmailOrUsername,
   findOneByEmail,
 } = require('../repositories/userRepository');
+const {
+  findOne,
+} = require('../repositories/userRepository');
 const jwt = require('jsonwebtoken');
 const config = require('../config/auth.config');
 const bcrypt = require('bcrypt');
@@ -62,16 +65,20 @@ exports.signInService = async(payload) => {
   }, config.secret, {
     expiresIn: '1d',
   });
-
   return {
-    id: fetchedUser.ID,
     username: fetchedUser.username,
+    fullName: fetchedUser.fullName,
     token: token,
   };
 };
 
-exports.verifyToken = (token) => {
-  return jwt.verify(token, config.secret, (error, decoded) => {
+exports.verifyToken = async(token) => {
+  return jwt.verify(token, config.secret, async(error, decoded) => {
+    const userID = decoded.id;
+    const returnedUser = await findOne(userID);
+    if (!returnedUser) {
+      throw new Error(error);
+    }
     if (error) {
       throw new Error(error);
     }

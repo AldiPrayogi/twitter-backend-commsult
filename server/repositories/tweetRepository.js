@@ -1,5 +1,6 @@
 const db = require('../models');
 const Tweet = db.tweets;
+const User = db.users;
 
 exports.createTweet = async(payload) => {
   return Tweet.create(payload);
@@ -16,10 +17,12 @@ exports.updateMessage = async(tweetID, payload) => {
 };
 
 exports.findAll = async() => {
+  console.log('a');
   return Tweet.findAll({
     order: [
-      ['createdAt', 'ASC'],
+      ['createdAt', 'DESC'],
     ],
+    include: [{model: User, required: true}],
   });
 };
 

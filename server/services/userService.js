@@ -8,7 +8,6 @@ const bcrypt = require('bcrypt');
 
 exports.fetchOne = async(userID) => {
   const rawFetchedUserData = await findOne(userID);
-
   if (!rawFetchedUserData){
     throw new Error('User Not Found!');
   }

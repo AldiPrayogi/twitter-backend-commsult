@@ -5,6 +5,7 @@ const {
   deleteTweet,
   findAll,
 } = require('../repositories/tweetRepository');
+const { fetchOne } = require('../services/userService');
 const {v4} = require('uuid');
 const jwt = require('jsonwebtoken');
 
@@ -14,7 +15,17 @@ exports.fetchAllTweets = async() => {
     throw new Error('No Tweet Found!');
   }
   return fetchedTweets.map((tweet) => {
-    return tweet.dataValues;
+    return {
+      ID: tweet.dataValues.ID,
+      message: tweet.dataValues.message,
+      createdAt: tweet.dataValues.createdAt,
+      updatedAt: tweet.dataValues.updatedAt,
+      User: {
+        fullName: tweet.dataValues.User.dataValues.fullName,
+        username: tweet.dataValues.User.dataValues.username,
+        email: tweet.dataValues.User.dataValues.email,
+      },
+    };
   });
 };
 
@@ -28,6 +39,8 @@ exports.createTweet = async(payload) => {
   }
   const decodedToken = jwt.decode(payload.token);
   const userID = decodedToken.id;
+  const user = await fetchOne(userID);
+  if (!user) throw new Error('Failed to create tweet');
   const newPayload = {
     ID: tweetID,
     userID: userID,

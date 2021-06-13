@@ -9,5 +9,6 @@ router.use(cookieParser());
 router.post('/signup', authController.signUp);
 router.post('/login', authController.signIn);
 router.post('/verify', authController.verify);
+router.post('/logout', authController.logout);
 
 module.exports = router;

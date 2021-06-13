@@ -33,11 +33,11 @@ exports.signIn = async(req, res) => {
     const fetchedUser = await signInService(req.body);
     const {
       token,
-      id: userID,
       username,
+      fullName,
     } = fetchedUser;
     const userData = {
-      userID, username,
+      username, fullName,
     };
     res.cookie('token', token, { httpOnly: true });
     res.send({
@@ -51,11 +51,10 @@ exports.signIn = async(req, res) => {
   }
 };
 
-exports.verify = (req, res) => {
+exports.verify = async(req, res) => {
   const token = req.cookies.token;
-  console.log(token);
   try {
-    const isVerified = verifyToken(token);
+    const isVerified = await verifyToken(token);
     res.status(200).send({
       isVerified,
     });
@@ -66,4 +65,12 @@ exports.verify = (req, res) => {
     });
   }
 };
+
+exports.logout = (req, res) => {
+  res.clearCookie('token');
+  res.status(200).send({
+    message: 'Log out successfully',
+  });
+};
+
 

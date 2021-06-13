@@ -38,7 +38,6 @@ exports.createTweet = async(req, res) => {
 
 exports.update = async(req, res) => {
   const token = req.cookies.token;
-
   const payload = {
     token,
     ...req.body,

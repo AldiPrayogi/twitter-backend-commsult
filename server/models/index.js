@@ -22,10 +22,10 @@ db.sequelize = sequelize;
 db.users = require('./User')(sequelize, Sequelize);
 db.tweets = require('./Tweet')(sequelize, Sequelize);
 
-// db.users.hasMany(db.tweets, {as: 'tweets'});
+db.users.hasMany(db.tweets, {foreignKey: 'userID'});
 db.tweets.belongsTo(db.users, {
   foreignKey: 'userID',
-  as: 'user',
+  targetKey: 'ID',
 });
 
 module.exports = db;
