@@ -3,11 +3,12 @@ const {
   updateTweet,
   deleteTweet,
   fetchAllTweets,
+  searchTweet,
 } = require('../services/tweetService');
 
 exports.findAllTweets = async(req, res) => {
   try {
-    const allTweets = await fetchAllTweets();
+    const allTweets = await fetchAllTweets(req.query);
     res.status(200).send(allTweets);
   } catch (error){
     res.status(204).send({
@@ -75,6 +76,19 @@ exports.delete = async(req, res) => {
     });
   } catch (error){
     res.status(500).send({
+      message: error.message,
+    });
+  }
+};
+
+exports.fetchAllByMessage = async(req, res) => {
+  console.log('input');
+  const message = req.params.message;
+  try {
+    const allTweets = await searchTweet(message);
+    res.status(200).send(allTweets);
+  } catch (error){
+    res.status(204).send({
       message: error.message,
     });
   }

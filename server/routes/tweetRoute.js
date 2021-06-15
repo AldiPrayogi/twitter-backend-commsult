@@ -11,10 +11,6 @@ const cookieParser = require('cookie-parser');
 
 router.use(cookieParser());
 
-router.get('/',
-  verifyToken,
-  checkIfTokenIsProvided,
-  tweetController.findAllTweets);
 router.post('/',
   verifyToken,
   checkIfTokenIsProvided,
@@ -27,5 +23,13 @@ router.delete('/:tweetID',
   verifyToken,
   checkIfTokenIsProvided,
   tweetController.delete);
+router.get('/:message',
+  verifyToken,
+  checkIfTokenIsProvided,
+  tweetController.fetchAllByMessage);
+router.get('/:sortingValue?',
+  verifyToken,
+  checkIfTokenIsProvided,
+  tweetController.findAllTweets);
 
 module.exports = router;

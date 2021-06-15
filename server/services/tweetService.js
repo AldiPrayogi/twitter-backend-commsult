@@ -4,13 +4,15 @@ const {
   updateMessage,
   deleteTweet,
   findAll,
+  findAllByMessage,
 } = require('../repositories/tweetRepository');
 const { fetchOne } = require('../services/userService');
 const {v4} = require('uuid');
 const jwt = require('jsonwebtoken');
 
-exports.fetchAllTweets = async() => {
-  const fetchedTweets = await findAll();
+exports.fetchAllTweets = async(sortingValue) => {
+  const sortValue = sortingValue.sortingValue;
+  const fetchedTweets = await findAll(sortValue);
   if (!fetchedTweets){
     throw new Error('No Tweet Found!');
   }
@@ -81,4 +83,25 @@ exports.deleteTweet = async(payload) => {
   if (deletedTweet[0] === 0){
     throw new Error('Failed To Delete Tweet!');
   }
+};
+
+exports.searchTweet = async(payload) => {
+  console.log(payload);
+  const fetchedTweets = await findAllByMessage(payload);
+  if (!fetchedTweets){
+    throw new Error('No Tweet Found!');
+  }
+  return fetchedTweets.map((tweet) => {
+    return {
+      ID: tweet.dataValues.ID,
+      message: tweet.dataValues.message,
+      createdAt: tweet.dataValues.createdAt,
+      updatedAt: tweet.dataValues.updatedAt,
+      User: {
+        fullName: tweet.dataValues.User.dataValues.fullName,
+        username: tweet.dataValues.User.dataValues.username,
+        email: tweet.dataValues.User.dataValues.email,
+      },
+    };
+  });
 };

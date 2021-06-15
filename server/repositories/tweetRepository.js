@@ -1,6 +1,7 @@
 const db = require('../models');
 const Tweet = db.tweets;
 const User = db.users;
+const {Op} = require('sequelize');
 
 exports.createTweet = async(payload) => {
   return Tweet.create(payload);
@@ -16,11 +17,10 @@ exports.updateMessage = async(tweetID, payload) => {
   });
 };
 
-exports.findAll = async() => {
-  console.log('a');
+exports.findAll = async(sortingValue) => {
   return Tweet.findAll({
     order: [
-      ['createdAt', 'DESC'],
+      ['createdAt', sortingValue],
     ],
     include: [{model: User, required: true}],
   });
@@ -28,6 +28,17 @@ exports.findAll = async() => {
 
 exports.deleteTweet = async(tweetID) => {
   return Tweet.destroy({where: {ID: tweetID}});
+};
+
+exports.findAllByMessage = async(message) => {
+  return Tweet.findAll({
+    where: {
+      message: {
+        [Op.iLike]: '%' + message + '%',
+      },
+    },
+    include: [{model: User, required: true}],
+  });
 };
 
 
